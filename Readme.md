@@ -40,3 +40,19 @@ Here's a comprehensive explanation of **all columns** from your SQL Server index
 | High number of suggested indexes with overlapping columns | Consolidate to avoid over-indexing.                          |
 
 ---
+🔧 Rebuild vs Reorganize vs Update Statistics
+| Task                  | What it does                                                 | When to use                                 | Cost                                            |
+| --------------------- | ------------------------------------------------------------ | ------------------------------------------- | ----------------------------------------------- |
+| **Rebuild Index**     | Drops and recreates the index                                | Fragmentation > 30%                         | High (locks resources, CPU, I/O)                |
+| **Reorganize Index**  | Defragments pages in-place                                   | Fragmentation 5–30%                         | Low (online, minimal locks)                     |
+| **Update Statistics** | Refreshes table/index statistics used by the query optimizer | After large INSERT/UPDATE/DELETE operations | Medium (impacts query plan accuracy if skipped) |
+
+
+✅ When Should You Rebuild or Reorganize?
+| Fragmentation % | Page Count | Action                                              |
+| --------------- | ---------- | --------------------------------------------------- |
+| < 5%            | Any        | Do nothing                                          |
+| 5–30%           | > 100      | Reorganize                                          |
+| > 30%           | > 100      | Rebuild                                             |
+| Any %           | < 100      | Usually not worth it unless performance is impacted |
+
